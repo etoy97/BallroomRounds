@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Ballroom Rounds</string>
+    <string name="Standard">Standard</string>
+    <string name="Latin">Latin</string>
+    <string name="WelcomeMessage">Welcome to the Ballroom Rounds App! Please select a style below</string>
+    <string name="Play">Play</string>
+    <string name="Pause">Pause</string>
+    <string name="StandardMessage">Standard Page</string>
+    <string name="LatinMessage">Latin Page</string>
+</resources>
