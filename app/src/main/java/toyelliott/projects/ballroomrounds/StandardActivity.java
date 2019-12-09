@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.media.AudioManager;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,8 +12,6 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class StandardActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener{
     private static final String TAG = "StandardClass";
@@ -23,7 +20,6 @@ public class StandardActivity extends AppCompatActivity implements YouTubePlayer
     YouTubePlayer video;
     Integer minVolume;
     Integer curVolume;
-    Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
