@@ -2,6 +2,9 @@ package toyelliott.projects.ballroomrounds;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.media.AudioManager;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,10 +17,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class StandardActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener{
-
     private static final String TAG = "StandardClass";
 
+    AudioManager am;
     YouTubePlayer video;
+    Integer minVolume;
+    Integer curVolume;
+    Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +35,10 @@ public class StandardActivity extends AppCompatActivity implements YouTubePlayer
         //Initializes with API Key that I created
         frag.initialize(YouTubeConfig.getAPI_KEY(), this);
 
-        
+        //Create an audio Manager to control volume
+        AudioManager myAudioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        am = myAudioManager;
+        minVolume = am.getStreamMinVolume(am.STREAM_MUSIC);
 
     }
     @Override
@@ -57,6 +66,30 @@ public class StandardActivity extends AppCompatActivity implements YouTubePlayer
     public void pressPause(View view) {
         Log.d(TAG, "pressed pause");
         video.pause();
+    }
+
+    public void pressVolumeUp(View view) {
+        Log.d(TAG, Integer.toString(am.getStreamVolume(am.STREAM_MUSIC)));
+        Log.d(TAG, "pressed volume up");
+
+
+        am.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
+        Log.d(TAG, Integer.toString(am.getStreamVolume(am.STREAM_MUSIC)));
+    }
+
+    public void fadeOut(View view) throws InterruptedException {
+        Log.d(TAG, "pressed volume down");
+        curVolume = am.getStreamVolume(am.STREAM_MUSIC);
+
+        //Fade music to quiet
+        while (curVolume > minVolume) {
+            am.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND);
+            curVolume = am.getStreamVolume(am.STREAM_MUSIC);
+            Thread.sleep(500);
+            Log.d(TAG, "Iteration");
+            Log.d(TAG, Integer.toString(am.getStreamVolume(am.STREAM_MUSIC)));
+        }
+        Log.d(TAG, "out");
     }
 }
 
