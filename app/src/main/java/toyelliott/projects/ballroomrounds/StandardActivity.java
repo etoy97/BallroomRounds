@@ -12,6 +12,9 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class StandardActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener{
     private static final String TAG = "StandardClass";
@@ -35,6 +38,18 @@ public class StandardActivity extends AppCompatActivity implements YouTubePlayer
         AudioManager myAudioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         am = myAudioManager;
         minVolume = am.getStreamMinVolume(am.STREAM_MUSIC);
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    fadeOut();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 10000);
 
     }
     @Override
@@ -73,8 +88,14 @@ public class StandardActivity extends AppCompatActivity implements YouTubePlayer
         Log.d(TAG, Integer.toString(am.getStreamVolume(am.STREAM_MUSIC)));
     }
 
-    public void fadeOut(View view) throws InterruptedException {
-        Log.d(TAG, "pressed volume down");
+    public void pressFadeOut(View view) throws InterruptedException {
+        Log.d(TAG, "pressed fade out");
+        fadeOut();
+        Log.d(TAG, "done fading");
+    }
+
+    private void fadeOut() throws InterruptedException {
+        Log.d(TAG, "Fading");
         curVolume = am.getStreamVolume(am.STREAM_MUSIC);
 
         //Fade music to quiet
@@ -85,7 +106,8 @@ public class StandardActivity extends AppCompatActivity implements YouTubePlayer
             Log.d(TAG, "Iteration");
             Log.d(TAG, Integer.toString(am.getStreamVolume(am.STREAM_MUSIC)));
         }
-        Log.d(TAG, "out");
     }
+
+
 }
 
