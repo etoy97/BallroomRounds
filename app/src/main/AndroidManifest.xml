@@ -11,7 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Standard2Activity"></activity>
+        <activity android:name=".SmoothActivity"
+            android:parentActivityName=".MainActivity">
+
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="toyelliott.projects.ballroomrounds.MainActivity"/>>
+        </activity>
         <activity
             android:name=".LatinActvity"
             android:parentActivityName=".MainActivity">
@@ -22,7 +29,7 @@
                 android:value="toyelliott.projects.ballroomrounds.MainActivity" />
         </activity>
         <activity
-            android:name=".StandardActivty"
+            android:name=".StandardActivity"
             android:parentActivityName=".MainActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->

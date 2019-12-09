@@ -4,25 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="toyelliott.projects.ballroomrounds.LatinActvity">
+    tools:context=".SmoothActivity">
 
     <TextView
-        android:id="@+id/latinTitle"
+        android:id="@+id/smoothTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/LatinMessage"
+        android:text="@string/SmoothMessage"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <view
+    <fragment
         android:id="@+id/YouTubePlayer"
-        class="com.google.android.youtube.player.YouTubePlayerView"
+        android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
         android:layout_width="0dp"
         android:layout_height="150dp"
         android:layout_marginStart="16dp"
@@ -30,30 +30,32 @@
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/latinTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/smoothTitle" />
 
     <Button
-        android:id="@+id/latinPlayButton"
+        android:id="@+id/standardPlayButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:onClick="pressPlay"
         android:text="@string/Play"
-        app:layout_constraintEnd_toStartOf="@+id/latinPauseButton"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toStartOf="@+id/standardPauseButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/YouTubePlayer" />
 
     <Button
-        android:id="@+id/latinPauseButton"
+        android:id="@+id/standardPauseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:onClick="pressPause"
         android:text="@string/Pause"
-        app:layout_constraintBaseline_toBaselineOf="@+id/latinPlayButton"
+        app:layout_constraintBaseline_toBaselineOf="@+id/standardPlayButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/latinPlayButton" />
+        app:layout_constraintStart_toEndOf="@+id/standardPlayButton" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

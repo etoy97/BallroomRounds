@@ -37,11 +37,11 @@
         android:onClick="startStandard"
         android:text="@string/Standard"
         android:visibility="visible" />
+
     <Space
         android:layout_width="1dp"
         android:layout_height="0dp"
-        android:layout_weight="1" >
-    </Space>
+        android:layout_weight="1"></Space>
 
     <Button
         android:id="@+id/latinButton"
@@ -55,9 +55,28 @@
         android:onClick="startLatin"
         android:text="@string/Latin"
         android:visibility="visible" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:visibility="invisible" />
+
+    <Button
+        android:id="@+id/smoothButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_weight="0"
+        android:onClick="startSmooth"
+        android:text="@string/Smooth"
+        android:visibility="visible" />
+
     <Space
         android:layout_width="1dp"
         android:layout_height="0dp"
-        android:layout_weight="10">
-    </Space>
+        android:layout_weight="10"></Space>
+
 </LinearLayout>

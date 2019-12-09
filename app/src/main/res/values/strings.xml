@@ -7,4 +7,6 @@
     <string name="Pause">Pause</string>
     <string name="StandardMessage">Standard Page</string>
     <string name="LatinMessage">Latin Page</string>
+    <string name="Smooth">Smooth</string>
+    <string name="SmoothMessage">Smooth Page</string>
 </resources>

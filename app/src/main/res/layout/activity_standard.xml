@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="toyelliott.projects.ballroomrounds.Standard">
+    tools:context="toyelliott.projects.ballroomrounds.StandardActivity">
 
     <TextView
         android:id="@+id/standardTitle"
@@ -20,9 +20,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <view
+    <fragment
         android:id="@+id/YouTubePlayer"
-        class="com.google.android.youtube.player.YouTubePlayerView"
+        android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
         android:layout_width="0dp"
         android:layout_height="150dp"
         android:layout_marginStart="16dp"

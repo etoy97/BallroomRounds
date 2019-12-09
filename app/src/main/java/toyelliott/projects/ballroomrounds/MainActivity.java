@@ -16,13 +16,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startStandard(View view) {
-        Intent intent = new Intent(this, StandardActivty.class);
+        Intent intent = new Intent(this, StandardActivity.class);
         startActivity(intent);
     }
 
 
     public void startLatin(View view) {
         Intent intent = new Intent(this, LatinActvity.class);
+        startActivity(intent);
+    }
+
+    public void startSmooth(View view) {
+        Intent intent = new Intent(this, SmoothActivity.class);
         startActivity(intent);
     }
 }
