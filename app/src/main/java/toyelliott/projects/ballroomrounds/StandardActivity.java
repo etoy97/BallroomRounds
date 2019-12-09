@@ -23,22 +23,21 @@ public class StandardActivity extends AppCompatActivity implements YouTubePlayer
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_standard);
+        //Creates a fragment YoutubePlayer
         YouTubePlayerSupportFragment frag = (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.YouTubePlayer);
 
+        //Initializes with API Key that I created
         frag.initialize(YouTubeConfig.getAPI_KEY(), this);
 
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                video.pause();
-            }
-        }, 10000);
+        
+
     }
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
         Log.d(TAG, "onClick: Done Initializing");
 
+        //Loads a specific video based on the URL and assigns to video
+        // so it can be references in the buttons
         video = player;
         video.loadVideo("B5lKqLmZ-bQ");
     }
@@ -48,11 +47,13 @@ public class StandardActivity extends AppCompatActivity implements YouTubePlayer
         Log.d(TAG, "onClick: Failed Initializing");
     }
 
+    //Plays when pushed
     public void pressPlay (View view) {
         Log.d(TAG, "pressed play");
         video.play();
     }
 
+    //Pauses when pushed
     public void pressPause(View view) {
         Log.d(TAG, "pressed pause");
         video.pause();
