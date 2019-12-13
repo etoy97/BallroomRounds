@@ -48,7 +48,7 @@ public class SmoothActivity extends AppCompatActivity implements YouTubePlayer.O
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                fadeOut();
+                MusicPlayer.fadeOut(fadeSec, TAG, am);
             }
         }, 90000);
 
@@ -57,40 +57,8 @@ public class SmoothActivity extends AppCompatActivity implements YouTubePlayer.O
     //Fades volume when pushed
     public void pressFadeOut(View view) {
         Log.d(TAG, "presseFadeOut begin");
-        fadeOut();
+        MusicPlayer.fadeOut(fadeSec, TAG, am);
         Log.d(TAG, "pressFadeOut end");
-    }
-
-    //Helper function for either pressFadeOut for testing or timer based fading
-    private void fadeOut() {
-        Log.d(TAG, "fadeOut begin");
-        Thread fade = new Thread(new Runnable() {
-            public void run(){
-                //Base the wait time on how many seconds for fade divided by current volume
-                waitTime = (long) ((fadeSec/am.getStreamVolume(am.STREAM_MUSIC)) *1000);
-
-                curVolume = am.getStreamVolume(am.STREAM_MUSIC);
-
-                //Fade music to quiet
-                while (curVolume > minVolume) {
-                    curVolume = am.getStreamVolume(am.STREAM_MUSIC);
-                    am.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND);
-                    try {
-                        Thread.sleep(waitTime);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d(TAG, "Iteration");
-                    Log.d(TAG, Integer.toString(am.getStreamVolume(am.STREAM_MUSIC)));
-                }
-
-                Log.d(TAG, "Out of fading");
-                return;
-            }
-        });
-        fade.start();
-
-        Log.d(TAG, "fadeOut end");
     }
 
     //Increases volume when pushed
@@ -111,14 +79,6 @@ public class SmoothActivity extends AppCompatActivity implements YouTubePlayer.O
         video.pause();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_smooth);
-        YouTubePlayerSupportFragment frag = (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.YouTubePlayer);
-
-        frag.initialize(YouTubeConfig.getAPI_KEY(), this);
-    }
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
         Log.d(TAG, "onClick: Done Initializing");

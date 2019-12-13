@@ -8,11 +8,9 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
-import com.google.android.youtube.player.YouTubePlayerView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,9 +20,6 @@ public class LatinActivity extends AppCompatActivity implements YouTubePlayer.On
 
     AudioManager am;
     YouTubePlayer video;
-    Integer minVolume;
-    Integer curVolume;
-    Long waitTime;
     Float fadeSec;
 
     @Override
@@ -40,7 +35,6 @@ public class LatinActivity extends AppCompatActivity implements YouTubePlayer.On
         //Create an audio Manager to control volume
         AudioManager myAudioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         am = myAudioManager;
-        minVolume = am.getStreamMinVolume(am.STREAM_MUSIC);
 
         //Will make this something the user can specify
         fadeSec = (float) 5;
@@ -49,47 +43,16 @@ public class LatinActivity extends AppCompatActivity implements YouTubePlayer.On
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                fadeOut();
+                MusicPlayer.fadeOut(fadeSec, TAG, am);
             }
         }, 90000);
     }
+
     //Fades volume when pushed
     public void pressFadeOut(View view) {
         Log.d(TAG, "presseFadeOut begin");
-        fadeOut();
+        MusicPlayer.fadeOut(fadeSec, TAG, am);
         Log.d(TAG, "pressFadeOut end");
-    }
-
-    //Helper function for either pressFadeOut for testing or timer based fading
-    private void fadeOut() {
-        Log.d(TAG, "fadeOut begin");
-        Thread fade = new Thread(new Runnable() {
-            public void run(){
-                //Base the wait time on how many seconds for fade divided by current volume
-                waitTime = (long) ((fadeSec/am.getStreamVolume(am.STREAM_MUSIC)) *1000);
-
-                curVolume = am.getStreamVolume(am.STREAM_MUSIC);
-
-                //Fade music to quiet
-                while (curVolume > minVolume) {
-                    curVolume = am.getStreamVolume(am.STREAM_MUSIC);
-                    am.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND);
-                    try {
-                        Thread.sleep(waitTime);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    Log.d(TAG, "Iteration");
-                    Log.d(TAG, Integer.toString(am.getStreamVolume(am.STREAM_MUSIC)));
-                }
-
-                Log.d(TAG, "Out of fading");
-                return;
-            }
-        });
-        fade.start();
-
-        Log.d(TAG, "fadeOut end");
     }
 
     //Increases volume when pushed
