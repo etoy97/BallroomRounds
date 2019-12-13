@@ -19,10 +19,14 @@ import java.util.TimerTask;
 public class StandardActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener{
     private static final String TAG = "StandardClass";
 
+    Boolean isMute;
     AudioManager am;
     YouTubePlayer video;
     Integer minVolume;
     Integer curVolume;
+    Long waitTime;
+    Float fadeSec;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,32 +43,64 @@ public class StandardActivity extends AppCompatActivity implements YouTubePlayer
         am = myAudioManager;
         minVolume = am.getStreamMinVolume(am.STREAM_MUSIC);
 
+        //Will make this something the user can specify
+        fadeSec = (float) 5;
+
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                try {
                     fadeOut();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
-        }, 10000);
+        }, 90000);
 
     }
-    @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
-        Log.d(TAG, "onClick: Done Initializing");
 
-        //Loads a specific video based on the URL and assigns to video
-        // so it can be references in the buttons
-        video = player;
-        video.loadVideo("B5lKqLmZ-bQ");
+    //Fades volume when pushed
+    public void pressFadeOut(View view) {
+        Log.d(TAG, "presseFadeOut begin");
+        fadeOut();
+        Log.d(TAG, "pressFadeOut end");
     }
 
-    @Override
-    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult error) {
-        Log.d(TAG, "onClick: Failed Initializing");
+    //Helper function for either pressFadeOut for testing or timer based fading
+    private void fadeOut() {
+        Log.d(TAG, "fadeOut begin");
+        Thread fade = new Thread(new Runnable() {
+            public void run(){
+                //Base the wait time on how many seconds for fade divided by current volume
+                waitTime = (long) ((fadeSec/am.getStreamVolume(am.STREAM_MUSIC)) *1000);
+
+                curVolume = am.getStreamVolume(am.STREAM_MUSIC);
+
+                //Fade music to quiet
+                while (curVolume > minVolume) {
+                    curVolume = am.getStreamVolume(am.STREAM_MUSIC);
+                    am.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND);
+                    try {
+                        Thread.sleep(waitTime);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, "Iteration");
+                    Log.d(TAG, Integer.toString(am.getStreamVolume(am.STREAM_MUSIC)));
+                }
+
+                Log.d(TAG, "Out of fading");
+                return;
+            }
+        });
+        fade.start();
+
+        Log.d(TAG, "fadeOut end");
+    }
+
+    //Increases volume when pushed
+    public void pressVolumeUp(View view) {
+        Log.d(TAG, Integer.toString(am.getStreamVolume(am.STREAM_MUSIC)));
+        Log.d(TAG, "pressed volume up");
+        am.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
+        Log.d(TAG, Integer.toString(am.getStreamVolume(am.STREAM_MUSIC)));
     }
 
     //Plays when pushed
@@ -79,35 +115,18 @@ public class StandardActivity extends AppCompatActivity implements YouTubePlayer
         video.pause();
     }
 
-    public void pressVolumeUp(View view) {
-        Log.d(TAG, Integer.toString(am.getStreamVolume(am.STREAM_MUSIC)));
-        Log.d(TAG, "pressed volume up");
+    @Override
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
+        Log.d(TAG, "onClick: Done Initializing");
 
-
-        am.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
-        Log.d(TAG, Integer.toString(am.getStreamVolume(am.STREAM_MUSIC)));
+        //Loads a specific video based on the URL and assigns to video
+        // so it can be references in the buttons
+        video = player;
+        video.loadVideo("B5lKqLmZ-bQ");
     }
 
-    public void pressFadeOut(View view) throws InterruptedException {
-        Log.d(TAG, "pressed fade out");
-        fadeOut();
-        Log.d(TAG, "done fading");
+    @Override
+    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult error) {
+        Log.d(TAG, "onClick: Failed Initializing");
     }
-
-    private void fadeOut() throws InterruptedException {
-        Log.d(TAG, "Fading");
-        curVolume = am.getStreamVolume(am.STREAM_MUSIC);
-
-        //Fade music to quiet
-        while (curVolume > minVolume) {
-            am.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND);
-            curVolume = am.getStreamVolume(am.STREAM_MUSIC);
-            Thread.sleep(500);
-            Log.d(TAG, "Iteration");
-            Log.d(TAG, Integer.toString(am.getStreamVolume(am.STREAM_MUSIC)));
-        }
-    }
-
-
 }
-
