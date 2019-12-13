@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void startLatin(View view) {
-        Intent intent = new Intent(this, LatinActvity.class);
+        Intent intent = new Intent(this, LatinActivity.class);
         startActivity(intent);
     }
 

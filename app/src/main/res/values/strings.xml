@@ -9,4 +9,6 @@
     <string name="LatinMessage">Latin Page</string>
     <string name="Smooth">Smooth</string>
     <string name="SmoothMessage">Smooth Page</string>
+    <string name="VolumeUp">Volume Up</string>
+    <string name="FadeOut">Fade Out</string>
 </resources>

@@ -1,22 +1,24 @@
 package toyelliott.projects.ballroomrounds;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
+import com.google.android.youtube.player.YouTubePlayerView;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class SmoothActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener{
-    private static final String TAG = "SmoothClass";
+public class LatinActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener {
+    private static final String TAG = "LatinClass";
 
     AudioManager am;
     YouTubePlayer video;
@@ -24,7 +26,6 @@ public class SmoothActivity extends AppCompatActivity implements YouTubePlayer.O
     Integer curVolume;
     Long waitTime;
     Float fadeSec;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +52,7 @@ public class SmoothActivity extends AppCompatActivity implements YouTubePlayer.O
                 fadeOut();
             }
         }, 90000);
-
     }
-
     //Fades volume when pushed
     public void pressFadeOut(View view) {
         Log.d(TAG, "presseFadeOut begin");
@@ -101,7 +100,7 @@ public class SmoothActivity extends AppCompatActivity implements YouTubePlayer.O
         Log.d(TAG, Integer.toString(am.getStreamVolume(am.STREAM_MUSIC)));
     }
 
-    public void pressPlay (View view) {
+    public void pressPlay(View view){
         Log.d(TAG, "pressed play");
         video.play();
     }
@@ -110,27 +109,18 @@ public class SmoothActivity extends AppCompatActivity implements YouTubePlayer.O
         Log.d(TAG, "pressed pause");
         video.pause();
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_smooth);
-        YouTubePlayerSupportFragment frag = (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.YouTubePlayer);
-
-        frag.initialize(YouTubeConfig.getAPI_KEY(), this);
-    }
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
         Log.d(TAG, "onClick: Done Initializing");
 
+        //Loads a specific video based on the URL and assigns to video
+        // so it can be references in the buttons
         video = player;
-        video.loadVideo("B5lKqLmZ-bQ");
+        video.loadVideo("LntVu8d3-Uc");
     }
 
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult error) {
         Log.d(TAG, "onClick: Failed Initializing");
     }
-
 }
-

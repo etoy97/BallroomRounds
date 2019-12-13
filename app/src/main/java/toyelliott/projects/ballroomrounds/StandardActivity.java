@@ -19,7 +19,6 @@ import java.util.TimerTask;
 public class StandardActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener{
     private static final String TAG = "StandardClass";
 
-    Boolean isMute;
     AudioManager am;
     YouTubePlayer video;
     Integer minVolume;
