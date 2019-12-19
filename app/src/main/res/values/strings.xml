@@ -11,4 +11,9 @@
     <string name="SmoothMessage">Smooth Page</string>
     <string name="VolumeUp">Volume Up</string>
     <string name="FadeOut">Fade Out</string>
+    <string name="configurationMessage">Configuration Page</string>
+    <string name="secHint">Example: 5 (for 5 sec)</string>
+    <string name="transitions">Transitions</string>
+    <string name="videoLengthDescription">Please put the number of seconds you would like each dance to last</string>
+    <string name="fadeSecDescription">Please put the number of seconds you would like the music to fade out before the dance ends</string>
 </resources>
