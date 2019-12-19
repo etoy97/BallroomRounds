@@ -23,6 +23,7 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
     AudioManager am;
     YouTubePlayer video;
     Float fadeSec;
+    Integer videoLength;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +41,11 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
         AudioManager myAudioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         am = myAudioManager;
 
-        //Will make this something the user can specify
-        fadeSec = (float) 5;
+        //These get specified in the ConfigureTime class
+        // and propagated to the Standard/Latin/Smooth class in intents
+        fadeSec = (float) getFadeSec();
+        videoLength = getVideoLength();
+
 
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -52,7 +56,7 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
 
                 video.pause();
             }
-        }, 10000);
+        }, videoLength);
 
     }
 
@@ -99,13 +103,16 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
     }
 
 
+    //Below methods get overrided based on whatever each subclass
+    //has for Tags, FadeSecs, etc.
     protected void setTag() {
         this.TAG = "RoundsActivity";
     }
-
+    protected int getFadeSec() {return 5;}
     protected List<String> videos() {
         return Arrays.asList("7gwBxKHBoEI", "W4hTJybfU7s");
     }
+    protected int getVideoLength() {return 10000;}
 
     protected abstract int getLayoutResourceId();
     protected abstract YouTubePlayerSupportFragment getFrag();

@@ -18,7 +18,7 @@
         tools:layout_editor_absoluteY="144dp" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/fadeSecConfiguration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -33,9 +33,20 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="28dp"
-        android:text="startRounds"
+        android:layout_marginBottom="24dp"
+        android:onClick="startRounds"
+        android:text="start Rounds"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/videoLengthConfiguration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@+id/fadeSecConfiguration"
+        tools:layout_editor_absoluteX="89dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

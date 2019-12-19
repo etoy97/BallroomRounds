@@ -1,17 +1,11 @@
 package toyelliott.projects.ballroomrounds;
 
-import android.os.Bundle;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class LatinActivity extends RoundsActivity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     @Override
     protected List<String> videos() {
         return Arrays.asList("7gwBxKHBoEI", "W4hTJybfU7s");

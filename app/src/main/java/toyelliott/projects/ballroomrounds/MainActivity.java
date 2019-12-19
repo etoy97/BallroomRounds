@@ -8,6 +8,7 @@ import android.view.View;
 
 
 public class MainActivity extends AppCompatActivity {
+    public static final String className = "className";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,17 +17,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startStandard(View view) {
-        Intent intent = new Intent(this, StandardActivity.class);
+        Intent intent = new Intent(this, ConfigureTime.class);
+        intent.putExtra(className, "standard");
         startActivity(intent);
     }
 
     public void startLatin(View view) {
-        Intent intent = new Intent(this, LatinActivity.class);
+        Intent intent = new Intent(this, ConfigureTime.class);
+        intent.putExtra(className, "latin");
         startActivity(intent);
     }
 
     public void startSmooth(View view) {
-        Intent intent = new Intent(this, SmoothActivity.class);
+        Intent intent = new Intent(this, ConfigureTime.class);
+        intent.putExtra(className, "smooth");
         startActivity(intent);
     }
 
