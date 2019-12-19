@@ -29,4 +29,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SmoothActivity.class);
         startActivity(intent);
     }
+
+    public void startConfiguration(View view) {
+        Intent intent = new Intent(this, ConfigureTime.class);
+        startActivity(intent);
+    }
 }
