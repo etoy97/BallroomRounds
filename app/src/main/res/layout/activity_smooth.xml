@@ -33,7 +33,7 @@
         app:layout_constraintTop_toBottomOf="@+id/smoothTitle" />
 
     <Button
-        android:id="@+id/smoothPlayButton"
+        android:id="@+id/standardPlayButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -41,21 +41,21 @@
         android:layout_marginEnd="16dp"
         android:onClick="pressPlay"
         android:text="@string/Play"
-        app:layout_constraintEnd_toStartOf="@+id/smoothPauseButton"
+        app:layout_constraintEnd_toStartOf="@+id/standardPauseButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/YouTubePlayer" />
 
     <Button
-        android:id="@+id/smoothPauseButton"
+        android:id="@+id/standardPauseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:onClick="pressPause"
         android:text="@string/Pause"
-        app:layout_constraintBaseline_toBaselineOf="@+id/smoothPlayButton"
+        app:layout_constraintBaseline_toBaselineOf="@+id/standardPlayButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/smoothPlayButton" />
+        app:layout_constraintStart_toEndOf="@+id/standardPlayButton" />
 
     <Button
         android:id="@+id/VolumeUp"
@@ -70,7 +70,7 @@
         app:layout_constraintEnd_toStartOf="@+id/FadeOut"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/smoothPlayButton" />
+        app:layout_constraintTop_toBottomOf="@+id/standardPlayButton" />
 
     <Button
         android:id="@+id/FadeOut"

@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     public void startLatin(View view) {
         Intent intent = new Intent(this, LatinActivity.class);
         startActivity(intent);
