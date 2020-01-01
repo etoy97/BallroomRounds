@@ -1,6 +1,7 @@
 package toyelliott.projects.ballroomrounds;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,8 +23,10 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
 
     AudioManager am;
     YouTubePlayer video;
-    Float fadeSec;
+    Integer fadeSec;
     Integer videoLength;
+    Timer timer;
+    TimerTask tt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,21 +46,33 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
 
         //These get specified in the ConfigureTime class
         // and propagated to the Standard/Latin/Smooth class in intents
-        fadeSec = (float) getFadeSec();
+        fadeSec = getFadeSec();
         videoLength = getVideoLength();
+        Integer delay = videoLength - fadeSec*1000;
 
 
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        timer = new Timer();
+        tt = new TimerTask() {
             @Override
-            public void run() {
+            public void run() throws IllegalStateException{
+
                 Log.d(TAG, "Running timed fade");
-                MusicPlayer.fadeOut(fadeSec, TAG, am);
+                MusicPlayer.fadeOut((float)fadeSec, TAG, am);
 
                 video.pause();
             }
-        }, videoLength);
+        };
+        timer.schedule(tt, delay);
 
+    }
+
+    //When the activity is closed, we stop the timer so no error gets returned
+    @Override
+    public void onStop() {
+        Log.d(this.TAG, "Went Back");
+        tt.cancel();
+        timer.cancel();
+        super.onStop();
     }
 
     //Fades volume when pushed
@@ -86,6 +101,22 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
         video.pause();
     }
 
+    //getFadeSec gets the FadeSec from ConfigureTime intent
+    protected int getFadeSec() {
+        Intent intent = getIntent();
+        Integer fadeSec = intent.getIntExtra(ConfigureTime.fS, 5);
+        Log.d(TAG, fadeSec.toString());
+        return fadeSec;
+    }
+
+    //getVideoLength gets the length of the video from ConfigureTime intent
+    protected int getVideoLength() {
+        Intent intent = getIntent();
+        Integer videoLength = intent.getIntExtra(ConfigureTime.vL, 10)*1000;
+        Log.d(TAG, videoLength.toString());
+        return videoLength;
+    }
+
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
         Log.d(TAG, "onClick: Done Initializing");
@@ -102,17 +133,14 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
         Log.d(TAG, "onClick: Failed Initializing");
     }
 
-
     //Below methods get overrided based on whatever each subclass
-    //has for Tags, FadeSecs, etc.
+    //has for Tags and videos
     protected void setTag() {
         this.TAG = "RoundsActivity";
     }
-    protected int getFadeSec() {return 5;}
     protected List<String> videos() {
-        return Arrays.asList("7gwBxKHBoEI", "W4hTJybfU7s");
+        return Arrays.asList("dQw4w9WgXcQ", "dQw4w9WgXcQ");
     }
-    protected int getVideoLength() {return 10000;}
 
     protected abstract int getLayoutResourceId();
     protected abstract YouTubePlayerSupportFragment getFrag();
