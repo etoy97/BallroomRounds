@@ -44,4 +44,8 @@ public class MusicPlayer {
         return;
     }
 
+    //Helper function to reset music after next video is played
+    public static void resetVolume(AudioManager am, int startVolume) {
+        am.setStreamVolume(am.STREAM_MUSIC, startVolume, 0);
+    }
 }

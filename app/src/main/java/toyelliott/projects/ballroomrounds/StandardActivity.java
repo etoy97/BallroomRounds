@@ -1,13 +1,9 @@
 package toyelliott.projects.ballroomrounds;
 
-
-import android.widget.Button;
-
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 import java.util.Arrays;
 import java.util.List;
-
 
 public class StandardActivity extends RoundsActivity{
     @Override

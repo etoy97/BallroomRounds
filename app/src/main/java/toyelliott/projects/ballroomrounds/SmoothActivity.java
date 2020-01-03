@@ -1,14 +1,9 @@
 package toyelliott.projects.ballroomrounds;
 
-import android.util.Log;
-import android.view.KeyEvent;
-import android.widget.Button;
-
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 import java.util.Arrays;
 import java.util.List;
-
 
 public class SmoothActivity extends RoundsActivity{
     @Override

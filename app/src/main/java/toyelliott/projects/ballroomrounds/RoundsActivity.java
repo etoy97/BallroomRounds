@@ -26,6 +26,7 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
     private Long fadeSec;
     private Long videoLength;
     private CountDownTimer timer;
+    private int startVolume;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,10 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
 
         //Create an Audio Manager to control volume
         am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+
+        //starrtVolume is the volume that we want to return the volume to
+        // after every new video is started
+        startVolume = am.getStreamVolume(am.STREAM_MUSIC);
 
         Button mButtonPlay = getmButtonPlay();
         Button mButtonPause = getmButtonPause();
@@ -102,6 +107,7 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
                     Log.d(TAG, "Went to next video");
                     videoLength = getVideoLengthFromIntent() - fadeSec*1000 + 4000;
                     video.next();
+                    resetVolume();
                     startTimer();
                 } else {
                     Log.d(TAG, "On last video");
@@ -109,6 +115,12 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
                 }
             }
         }.start();
+    }
+
+    //Resets volume before a new video is started
+    private void resetVolume() {
+        Log.d(this.TAG, "Resetting volume");
+        MusicPlayer.resetVolume(am, startVolume);
     }
 
     //Fades volume when pushed
@@ -128,13 +140,15 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
     }
 
     public void resumeRounds(){
-        Log.d(TAG, "pressed play");
+        Log.d(TAG, "Resume rounds");
         video.play();
         startTimer();
     }
 
+    //pauseRounds pauses the video and stops the timer
+    // the function is called in startTimer, onClickListener for mButtonPause, and onStop
     public void pauseRounds() {
-        Log.d(TAG, "pressed pause");
+        Log.d(TAG, "Pause rounds");
         video.pause();
         timer.cancel();
     }
