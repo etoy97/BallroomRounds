@@ -9,12 +9,6 @@ import java.util.List;
 
 public class LatinActivity extends RoundsActivity {
     @Override
-    protected Button getmButtonPlay() { return findViewById(R.id.latinPlayButton); }
-
-    @Override
-    protected Button getmButtonPause() { return findViewById(R.id.latinPauseButton); }
-
-    @Override
     protected List<String> videos() {
         return Arrays.asList("7gwBxKHBoEI", "W4hTJybfU7s");
     }

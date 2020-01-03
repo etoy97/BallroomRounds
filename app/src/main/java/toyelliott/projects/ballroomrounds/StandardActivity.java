@@ -11,12 +11,6 @@ import java.util.List;
 
 public class StandardActivity extends RoundsActivity{
     @Override
-    protected Button getmButtonPlay() { return findViewById(R.id.standardPlayButton); }
-
-    @Override
-    protected Button getmButtonPause() { return findViewById(R.id.standardPauseButton); }
-
-    @Override
     protected List<String> videos() {
         return Arrays.asList("B5lKqLmZ-bQ");
     }

@@ -12,12 +12,6 @@ import java.util.List;
 
 public class SmoothActivity extends RoundsActivity{
     @Override
-    protected Button getmButtonPlay() { return findViewById(R.id.smoothPlayButton); }
-
-    @Override
-    protected Button getmButtonPause() { return findViewById(R.id.smoothPauseButton); }
-
-    @Override
     protected List<String> videos() {
         return Arrays.asList("B5lKqLmZ-bQ");
     }

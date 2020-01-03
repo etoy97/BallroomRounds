@@ -56,14 +56,14 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
         mButtonPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                playVideo();
+                resumeRounds();
             }
         });
 
         mButtonPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pauseVideo();
+                pauseRounds();
             }
         });
 
@@ -110,7 +110,7 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
                     video.next();
                     startTimer();
                 } else {
-                    pauseVideo();
+                    pauseRounds();
                 }
             }
         }.start();
@@ -132,13 +132,13 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
         Log.d(TAG, Integer.toString(am.getStreamVolume(am.STREAM_MUSIC)));
     }
 
-    public void playVideo(){
+    public void resumeRounds(){
         Log.d(TAG, "pressed play");
         video.play();
         startTimer();
     }
 
-    public void pauseVideo() {
+    public void pauseRounds() {
         Log.d(TAG, "pressed pause");
         video.pause();
         timer.cancel();
@@ -160,6 +160,29 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
         return videoLength;
     }
 
+    //Below methods get overrided based on whatever each subclass
+    //has for Tags and videos
+    protected void setTag() {
+        this.TAG = "RoundsActivity";
+    }
+    protected List<String> videos() {
+        //Default videos
+        return Arrays.asList("dQw4w9WgXcQ", "dQw4w9WgXcQ");
+    }
+
+    protected Button getmButtonFadeOut() { return findViewById(R.id.FadeOut); }
+    protected Button getmButtonVolumeUp() { return findViewById(R.id.VolumeUp); }
+    protected Button getmButtonPlay() { return findViewById(R.id.playButton); }
+    protected Button getmButtonPause(){ return findViewById(R.id.pauseButton); }
+    protected abstract int getLayoutResourceId();
+    protected abstract YouTubePlayerSupportFragment getFrag();
+
+    @Override
+    public void onStop() {
+        pauseRounds();
+        super.onStop();
+    }
+
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
         Log.d(TAG, "onClick: Done Initializing");
@@ -175,20 +198,4 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult error) {
         Log.d(TAG, "onClick: Failed Initializing");
     }
-
-    //Below methods get overrided based on whatever each subclass
-    //has for Tags and videos
-    protected void setTag() {
-        this.TAG = "RoundsActivity";
-    }
-    protected List<String> videos() {
-        return Arrays.asList("dQw4w9WgXcQ", "dQw4w9WgXcQ");
-    }
-
-    protected abstract Button getmButtonPlay();
-    protected abstract Button getmButtonPause();
-    protected Button getmButtonFadeOut() { return findViewById(R.id.FadeOut); }
-    protected Button getmButtonVolumeUp() { return findViewById(R.id.VolumeUp); }
-    protected abstract int getLayoutResourceId();
-    protected abstract YouTubePlayerSupportFragment getFrag();
 }
