@@ -21,16 +21,11 @@ import java.util.List;
 public abstract class RoundsActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener {
     protected String TAG = "";
 
-    AudioManager am;
-    YouTubePlayer video;
-    Long fadeSec;
-    Long videoLength;
-    CountDownTimer timer;
-
-    Button mButtonPlay;
-    Button mButtonPause;
-    Button mButtonFadeOut;
-    Button mButtonVolumeUp;
+    private AudioManager am;
+    private YouTubePlayer video;
+    private Long fadeSec;
+    private Long videoLength;
+    private CountDownTimer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +39,13 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
         //Initializes with API Key that I created
         frag.initialize(YouTubeConfig.getAPI_KEY(), this);
 
-        //Create an audio Manager to control volume
-        AudioManager myAudioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-        am = myAudioManager;
+        //Create an Audio Manager to control volume
+        am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 
-        mButtonPlay = getmButtonPlay();
-        mButtonPause = getmButtonPause();
-        mButtonFadeOut = getmButtonFadeOut();
-        mButtonVolumeUp = getmButtonVolumeUp();
+        Button mButtonPlay = getmButtonPlay();
+        Button mButtonPause = getmButtonPause();
+        Button mButtonFadeOut = getmButtonFadeOut();
+        Button mButtonVolumeUp = getmButtonVolumeUp();
 
         mButtonPlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,18 +75,18 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
             }
         });
 
-        //These get specified in the ConfigureTime class
+        //fadeSec and videoLength get specified in the ConfigureTime class
         // and propagated to the Standard/Latin/Smooth/Rhythm class in intents
         fadeSec = getFadeSecFromIntent();
+
         //Have to subtract by fadeSec so it starts fading before the video is over
         // The 4000 is to add the extra few seconds that it takes for the video to load
         videoLength = getVideoLengthFromIntent() - fadeSec*1000 + 4000;
-        //Integer delay = videoLength - fadeSec*1000;
 
         startTimer();
     }
 
-
+    //startTimer is called by resumeRounds and creates a new Timer with the given videoLength
     private void startTimer() {
         timer = new CountDownTimer(videoLength, 1000) {
             @Override
@@ -110,6 +104,7 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
                     video.next();
                     startTimer();
                 } else {
+                    Log.d(TAG, "On last video");
                     pauseRounds();
                 }
             }
@@ -179,6 +174,7 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
 
     @Override
     public void onStop() {
+        Log.d(TAG, "Called stop, by either pressing back or closing the screen");
         pauseRounds();
         super.onStop();
     }
