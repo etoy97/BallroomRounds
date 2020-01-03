@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,18 +17,20 @@ import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public abstract class RoundsActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener {
     protected String TAG = "";
 
     AudioManager am;
     YouTubePlayer video;
-    Integer fadeSec;
-    Integer videoLength;
-    Timer timer;
-    TimerTask tt;
+    Long fadeSec;
+    Long videoLength;
+    CountDownTimer timer;
+
+    Button mButtonPlay;
+    Button mButtonPause;
+    Button mButtonFadeOut;
+    Button mButtonVolumeUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,75 +48,114 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
         AudioManager myAudioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         am = myAudioManager;
 
-        //These get specified in the ConfigureTime class
-        // and propagated to the Standard/Latin/Smooth class in intents
-        fadeSec = getFadeSec();
-        videoLength = getVideoLength();
-        Integer delay = videoLength - fadeSec*1000;
+        mButtonPlay = getmButtonPlay();
+        mButtonPause = getmButtonPause();
+        mButtonFadeOut = getmButtonFadeOut();
+        mButtonVolumeUp = getmButtonVolumeUp();
 
-
-        timer = new Timer();
-        tt = new TimerTask() {
+        mButtonPlay.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() throws IllegalStateException{
-
-                Log.d(TAG, "Running timed fade");
-                MusicPlayer.fadeOut((float)fadeSec, TAG, am);
-
-                video.pause();
+            public void onClick(View v) {
+                playVideo();
             }
-        };
-        timer.schedule(tt, delay);
+        });
 
+        mButtonPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pauseVideo();
+            }
+        });
+
+        mButtonFadeOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fadeOut();
+            }
+        });
+
+        mButtonVolumeUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pressVolumeUp();
+            }
+        });
+
+        //These get specified in the ConfigureTime class
+        // and propagated to the Standard/Latin/Smooth/Rhythm class in intents
+        fadeSec = getFadeSecFromIntent();
+        //Have to subtract by fadeSec so it starts fading before the video is over
+        // The 4000 is to add the extra few seconds that it takes for the video to load
+        videoLength = getVideoLengthFromIntent() - fadeSec*1000 + 4000;
+        //Integer delay = videoLength - fadeSec*1000;
+
+        startTimer();
     }
 
-    //When the activity is closed, we stop the timer so no error gets returned
-    @Override
-    public void onStop() {
-        Log.d(this.TAG, "Went Back");
-        tt.cancel();
-        timer.cancel();
-        super.onStop();
+
+    private void startTimer() {
+        timer = new CountDownTimer(videoLength, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                videoLength = millisUntilFinished;
+            }
+
+            @Override
+            public void onFinish() {
+                Log.d(TAG, "Finished Countdown");
+                fadeOut();
+                if (video.hasNext()) {
+                    Log.d(TAG, "Went to next video");
+                    videoLength = getVideoLengthFromIntent() - fadeSec*1000 + 4000;
+                    video.next();
+                    startTimer();
+                } else {
+                    pauseVideo();
+                }
+            }
+        }.start();
     }
 
     //Fades volume when pushed
-    public void pressFadeOut(View view) {
-        Log.d(this.TAG, "pressFadeOut begin");
+    public void fadeOut() {
+        Log.d(this.TAG, "fadeOut begin");
         MusicPlayer.fadeOut(fadeSec, TAG, am);
 
-        Log.d(TAG, "pressFadeOut end");
+        Log.d(TAG, "fadeOut end");
     }
 
     //Increases volume when pushed
-    public void pressVolumeUp(View view) {
+    public void pressVolumeUp() {
         Log.d(this.TAG, Integer.toString(am.getStreamVolume(am.STREAM_MUSIC)));
         Log.d(TAG, "pressed volume up");
         am.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
         Log.d(TAG, Integer.toString(am.getStreamVolume(am.STREAM_MUSIC)));
     }
 
-    public void pressPlay(View view){
+    public void playVideo(){
         Log.d(TAG, "pressed play");
         video.play();
+        startTimer();
     }
 
-    public void pressPause(View view) {
+    public void pauseVideo() {
         Log.d(TAG, "pressed pause");
         video.pause();
+        timer.cancel();
     }
 
-    //getFadeSec gets the FadeSec from ConfigureTime intent
-    protected int getFadeSec() {
+    //getFadeSec gets the FadeSec from ConfigureTime intent, in seconds
+    protected long getFadeSecFromIntent() {
         Intent intent = getIntent();
-        Integer fadeSec = intent.getIntExtra(ConfigureTime.fS, 5);
+        Long fadeSec = intent.getLongExtra(ConfigureTime.fS, 5);
         Log.d(TAG, fadeSec.toString());
         return fadeSec;
     }
 
-    //getVideoLength gets the length of the video from ConfigureTime intent
-    protected int getVideoLength() {
+    //getVideoLength gets the length of the video from ConfigureTime intent, in milliseconds
+    protected long getVideoLengthFromIntent() {
         Intent intent = getIntent();
-        Integer videoLength = intent.getIntExtra(ConfigureTime.vL, 10)*1000;
+        Long videoLength = intent.getLongExtra(ConfigureTime.vL, 10000);
         Log.d(TAG, videoLength.toString());
         return videoLength;
     }
@@ -142,6 +185,10 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
         return Arrays.asList("dQw4w9WgXcQ", "dQw4w9WgXcQ");
     }
 
+    protected abstract Button getmButtonPlay();
+    protected abstract Button getmButtonPause();
+    protected Button getmButtonFadeOut() { return findViewById(R.id.FadeOut); }
+    protected Button getmButtonVolumeUp() { return findViewById(R.id.VolumeUp); }
     protected abstract int getLayoutResourceId();
     protected abstract YouTubePlayerSupportFragment getFrag();
 }

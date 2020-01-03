@@ -5,7 +5,7 @@ import android.util.Log;
 
 public class MusicPlayer {
 
-    //Helper function for either pressFadeOut for testing or timer based fading
+    //Helper function for either fadeOut for testing or timer based fading
     public static void fadeOut(final float fadeSec, final String TAG, final AudioManager am){
         Log.d(TAG, "fadeOut begin");
         final Integer minVolume = am.getStreamMinVolume(am.STREAM_MUSIC);

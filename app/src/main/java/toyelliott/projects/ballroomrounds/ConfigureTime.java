@@ -21,24 +21,26 @@ public class ConfigureTime extends AppCompatActivity {
         setContentView(R.layout.activity_configure_time);
     }
 
-    private int getFadeSec() {
+    private long getFadeSec() {
         EditText text = findViewById(R.id.fadeSecConfiguration);
-        Integer sec = Integer.parseInt(text.getText().toString());
+        //Convert to long for later subtraction in RoundsActivity
+        Long sec = (long) Integer.parseInt(text.getText().toString());
         Log.d(TAG, "fadeSec:" + sec.toString());
         return sec;
     }
 
-    private int getVideoLength() {
+    private long getVideoLength() {
         EditText text = findViewById(R.id.videoLengthConfiguration);
-        Integer sec = Integer.parseInt(text.getText().toString());
+        //Convert to milliseconds
+        Long sec = (long) Integer.parseInt(text.getText().toString()) * 1000;
         Log.d(TAG, "videoLength:" + sec.toString());
         return sec;
     }
 
     public void startRounds(View view) {
         Log.d(TAG, "pressed startRounds");
-        Integer fadeSec = getFadeSec();
-        Integer videoLength = getVideoLength();
+        Long fadeSec = getFadeSec();
+        Long videoLength = getVideoLength();
 
         String className = getIntent().getStringExtra(MainActivity.className);
         System.out.println(className);
