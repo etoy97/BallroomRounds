@@ -43,7 +43,7 @@ public abstract class RoundsActivity extends AppCompatActivity implements YouTub
         //Create an Audio Manager to control volume
         am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 
-        //starrtVolume is the volume that we want to return the volume to
+        //startVolume is the volume that we want to return the volume to
         // after every new video is started
         startVolume = am.getStreamVolume(am.STREAM_MUSIC);
 
